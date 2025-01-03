@@ -2,6 +2,7 @@ const express  = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/user.controller');
+
 const {body} = require('express-validator');
 
 router.post('/register', [
@@ -13,6 +14,12 @@ router.post('/register', [
 ],
     userController.registerUser 
 );
+router.post('/login',[
+    body('email').notEmpty().withMessage('Email is required'),
+    body('password')
+],
+   userController.loginUser
+)
 
 
 module.exports = router;
