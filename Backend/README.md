@@ -269,3 +269,83 @@ Example:
 ```
 
 ---
+## Captain Registration Endpoint
+
+### Endpoint
+`POST /captains/register`
+
+### Description
+This endpoint allows captains to register by providing their personal details, vehicle details, and authentication information. Upon successful registration, a JSON Web Token (JWT) is returned for authentication purposes.
+
+### Request Body
+The request body must be a JSON object containing the following fields:
+
+| Field                 | Type     | Required | Description                                              |
+|-----------------------|----------|----------|----------------------------------------------------------|
+| `fullname.firstname`  | `String` | Yes      | The captain's first name. Must be at least 3 characters long. |
+| `fullname.lastname`   | `String` | No       | The captain's last name.                                 |
+| `email`               | `String` | Yes      | A valid email address. Must be unique.                   |
+| `password`            | `String` | Yes      | The captain's password. Must be at least 3 characters long. |
+| `vehicle.color`       | `String` | Yes      | The color of the vehicle. Must be at least 3 characters long. |
+| `vehicle.plate`       | `String` | Yes      | The vehicle's license plate. Must be at least 3 characters long. |
+| `vehicle.capacity`    | `Number` | Yes      | The capacity of the vehicle. Must be at least 1.         |
+| `vehicle.vehicleType` | `String` | Yes      | The type of vehicle. Must be one of `car`, `bike`, or `auto`. |
+
+#### Example Request Body
+```json
+{
+  "fullname": {
+    "firstname": "captain1",
+    "lastname": "test"
+  },
+  "email": "captain1@test.com",
+  "password": "securepassword",
+  "vehicle": {
+    "color": "Blue",
+    "plate": "CAP1234",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Response
+
+#### Success (201 Created)
+```json
+{
+  "captain": {
+    "fullname": {
+      "firstname": "captain1",
+      "lastname": "test"
+    },
+    "email": "captain1@test.com",
+    "vehicle": {
+      "color": "Blue",
+      "plate": "CAP1234",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "_id": "64bfc1a2f9f4a0a5c7f6a9d8"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+#### Error Responses
+
+**400 Bad Request**  
+Occurs when the request body fails validation or the email already exists.  
+Example:
+```json
+{
+  "errors": [
+    { "msg": "First name is required", "param": "fullname.firstname", "location": "body" },
+    { "msg": "Vehicle color is required", "param": "vehicle.color", "location": "body" }
+  ]
+}
+```
+
+
+
+---
